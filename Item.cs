@@ -16,6 +16,21 @@ class Item
 
     public Item(string name, int price)
     {
+
+        // om namet är tomt, null eller bara mellanslag kastas ett ArgumentException.
+        // Kunstruktorn avbryts då och inget item saknas
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Namn kan inte vara tom.", nameof(name));
+        }
+
+        // om priset är lägre än 0 kastas ett ArgumentOutOfException.
+        // priset 0 kan fortfarande användas
+        if (price < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(price), "Priset kan inte vara negativt");
+        }
+
         Name = name;
         Price = price;
     }

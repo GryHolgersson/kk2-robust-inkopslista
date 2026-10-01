@@ -22,13 +22,17 @@ class ShoppingList
         items.Add(item);
     }
 
-    // Removes the item the user sees as number 1, 2, 3 ...
+    // Användaren ser varorna i ordning 1, 2, 3....
+    // Om du tar bort varor så behålls ändå en ordning men den rättar sig efter förändringen.
     public void RemoveAt(int number)
     {
         items.RemoveAt(number - 1);
     }
 
-    // Adds up the price of every item on the list.
+    // Adderar summorna av alla varor från listan
+    // Det börjar på 0 och går sedan igenom varje index (i)
+    // varans pris läggs in 
+    // ger tillbaka summan till koden som anropade den
     public int Total()
     {
         int sum = 0;
@@ -41,11 +45,13 @@ class ShoppingList
         return sum;
     }
 
-    // Looks up an item by its name. Returns null if there is no such item.
+    // Letar fram en vara i listan, finns den inte blir de null
     public Item Find(string name)
     {
+        // Går igenom en i taget
         foreach (Item item in items)
         {
+            // jämför alla namn
             if (item.Name == name)
             {
                 return item;
@@ -57,44 +63,58 @@ class ShoppingList
 
     public void Print()
     {
+        //Samma här, går igenom listan med index i, börjar på 0
         for (int i = 0; i < items.Count; i++)
         {
+            // denna kod gör så att användaren kan se listan 1, 2, 3 osv istället för 0, 1, 2...
+            // efter index skrivs item ut med hjälp av ToString som finns i Item.cs
             Console.WriteLine($"{i + 1}. {items[i]}");
         }
-
+// skriver ut summan av alla priser
         Console.WriteLine($"Totalt: {Total()} kr");
     }
 
-    // Writes one item per line, as "price;name".
+    // Skriver ut ett item per rad i listan
+    // add lägger alltid in i slutet av listan
+
     public void Save()
     {
         List<string> lines = new List<string>();
-
+        //priset kommer först och namnet sist
         foreach (Item item in items)
         {
+            
             lines.Add($"{item.Price};{item.Name}");
         }
 
         try
         {
+            // Join sätter ihop raderna med radbrytning och ytterligare en radbrytning
+            // läggs sist. Filen skrivs över varje gång
             File.WriteAllText(path, string.Join("\r\n", lines) + "\r\n");
         }
         catch
         {
+        
         }
-
+// skrivs alltid ut även om det misslyckades
         Console.WriteLine("Listan är sparad.");
     }
 
-    // Reads the file back into the list.
+    // läser in varorna från filen och lägger dem i listan när programmet startar
     public void Load()
     {
+        // läser hela filen
         string text = File.ReadAllText(path);
+        // Delar texten vid varje radbrytning
         string[] lines = text.Split('\n');
-
+       // går igenom raderna en i taget
         foreach (string line in lines)
         {
+            //Koden antar att parts [0] är priset ocu parts[1] är namnet
             string[] parts = line.Split(';');
+            // gör om [0] till ett heltal sedan skapar ett item och namnet samt priset 
+            // och lägger in det i listan.
             items.Add(new Item(parts[1], int.Parse(parts[0])));
         }
     }

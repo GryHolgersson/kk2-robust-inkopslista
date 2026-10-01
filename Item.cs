@@ -17,7 +17,8 @@ class Item
     public Item(string name, int price)
     {
 
-        // om namet är tomt, null eller bara mellanslag kastas ett ArgumentException.
+        // **Adderat till koden**
+        //  om namet är tomt, null eller bara mellanslag kastas ett ArgumentException.
         // Kunstruktorn avbryts då och inget item saknas
         if (string.IsNullOrWhiteSpace(name))
         {

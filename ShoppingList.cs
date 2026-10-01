@@ -1,4 +1,10 @@
 // Holds the items and takes care of loading and saving them.
+
+//Skapar klassen "ShoppingList" och meddelar att den håller en lista. 
+// path är en låda som kommer ihåg sökvägen
+// private innebär att bara klassen kommer åt den och de andra klasserna kan inte nå den.
+// String är ett värde som betyder text, path är en text
+//Item är den listan som innehåller alla Item objekten 
 class ShoppingList
 {
     private List<Item> items = new List<Item>();
@@ -8,7 +14,9 @@ class ShoppingList
     {
         this.path = path;
     }
-
+// void innebär att metoden inte returnerar något 
+// Item och item fungerar som en brevlåda och tar emot ett Item
+// Listans add lägger item sist i listan
     public void Add(Item item)
     {
         items.Add(item);

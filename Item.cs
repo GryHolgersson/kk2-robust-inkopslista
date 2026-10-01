@@ -1,6 +1,6 @@
 // One item on the shopping list.
 
-//Skapar klassen "Item" och medelar vad som ingår, Namn samt Price. 
+//Skapar klassen "Item" och meddelar vad som ingår, Namn samt Price. 
 // get och set hämtar samt sparar värdet. 
 // public innebär att andra klasser får använda det. 
 // String samt int är värden 

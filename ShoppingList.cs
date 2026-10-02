@@ -95,6 +95,9 @@ class ShoppingList
         }
         catch
         {
+        // catch blocket är tomt. Användaren får inte veta om 
+        // filen är låst eller misslyckad. Meddelandet om sparad lista kommer ändå.
+        // skriver in felhantering så att användaren får information om listan ej sparas.
         
         }
 // skrivs alltid ut även om det misslyckades

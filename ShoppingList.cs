@@ -132,6 +132,15 @@ class ShoppingList
         {
             //Koden antar att parts [0] är priset och parts[1] är namnet
             string[] parts = line.Split(';');
+
+            if (parts.Length !=2 || !int.TryParse(parts[0], out int price))
+            {
+                Console.WriteLine($"Hoppades över4 en felaktig rad i filen: {line}");
+                //$ gör att {line} fylls i med innehållet i variabeln line, alltså själva raden från filen som var fel. Det blir ungefär: Hoppade över en felaktig rad i filen: Mjölk.
+                //Användaren får alltså veta att något hoppades över och vilken rad det gällde, i stället för att något händer i tysthet.
+                continue;
+
+            }
             // gör om [0] till ett heltal sedan skapar ett item och namnet samt priset 
             // och lägger in det i listan.
             items.Add(new Item(parts[1], int.Parse(parts[0])));

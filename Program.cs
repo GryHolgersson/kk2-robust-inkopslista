@@ -41,9 +41,16 @@ while (true)
             continue;
         }
         // Skapar ett nytt Item och lägger in det sist i listan.
-        // Item kastar undantag om namnet är tomt eller priset negativt (hanteras i del 2)
-        //Krash vid negativt värde
-        list.Add(new Item(name, price));
+        // Item kastar undantag om namnet är tomt eller priset negativt.
+        // catch fångar felet så att programmet inte kraschar och användaren får veta vad som var fel.
+        try
+        {
+            list.Add(new Item(name, price));
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Varan kunde inte läggas till: {ex.Message}");
+        }
     }
     // Ta bort vara
     else if (choice == 2)

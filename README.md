@@ -73,7 +73,7 @@ Konstruktorn i `Item` vägrar nu ogiltiga värden i stället för att skapa ett 
 - Tomt namn, `null` eller bara mellanslag ger `ArgumentException` (kontrolleras med `string.IsNullOrWhiteSpace`).
 - Negativt pris ger `ArgumentOutOfRangeException`. Priset 0 är tillåtet.
 
-*Ej klart:* `Program.cs` fångar ännu inte dessa undantag.
+I `Program.cs` ligger `list.Add(new Item(name, price))` i en `try`. `catch (ArgumentException)` fångar felet, både tomt namn och negativt pris, eftersom `ArgumentOutOfRangeException` ärver från `ArgumentException`. Användaren får meddelandet "Varan kunde inte läggas till" följt av felet från `Item`, och programmet fortsätter köra.
 
 ## Designval
 

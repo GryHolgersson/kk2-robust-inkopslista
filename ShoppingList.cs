@@ -46,7 +46,7 @@ class ShoppingList
     {
         int sum = 0;
 
-        for (int i = 1; i < items.Count; i++) //Loopen börjar på 1 så första varan kommer inte med. 
+        for (int i = 0; i < items.Count; i++) //Loopen börjar på 0 så att första varan kommer med.
         {
             sum += items[i].Price;
         }
@@ -118,10 +118,8 @@ class ShoppingList
     // läser in varorna från filen och lägger dem i listan när programmet startar
     public void Load()
     {
-        // läser hela filen
-        string text = File.ReadAllText(path);
-        // Delar texten vid varje radbrytning
-        string[] lines = text.Split('\n');
+        // läser filen och delar upp den i rader direkt, klarar både \r\n och \n
+        string[] lines = File.ReadAllLines(path);
        // går igenom raderna en i taget
         foreach (string line in lines)
         {

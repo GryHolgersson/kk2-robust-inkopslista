@@ -34,14 +34,16 @@ Startkoden innehöll sex fel: fyra som får programmet att krascha, ett som ger 
 - Den sista "raden" blir tom. `Split(';')` ger då bara en del, och `parts[1]` finns inte.
 - Ett osynligt `\r` blir kvar i slutet av varje namn, så `"Mjölk"` blir `"Mjölk\r"` och `Find("Mjölk")` hittar ingenting.
 
-**Hur löst:** *Ej klart.*
+**Hur löst:** *Påbörjat.* `File.ReadAllText` och `Split('\n')` är ersatta med `File.ReadAllLines`. Den delar upp filen i rader och klarar både `\r\n` och `\n`, så inget `\r` blir kvar i namnen och ingen tom rad skapas i slutet av filen.
+
+*Ej klart:* Loopen kontrollerar ännu inte varje rad. En tom rad mitt i filen, en rad utan `;` eller ett pris som inte är ett tal får fortfarande programmet att krascha.
 
 ### Fel 5: Totalsumman blir fel
 **Vad hände:** Totalsumman stämde inte när man räknade efter för hand. Den första varans pris saknades.
 
 **Varför:** Loopen i `Total` börjar på `i = 1`, men listan räknar från 0. Den första varan, på index 0, räknas därför aldrig med.
 
-**Hur löst:** *Ej klart.*
+**Hur löst:** Loopen börjar nu på `i = 0`, så att alla varor kommer med i summan. Villkoret `i < items.Count` var redan rätt och är oförändrat.
 
 ### Fel 6: Programmet säger att listan är sparad fast det misslyckades
 **Vad hände:** Om sparandet misslyckades, till exempel för att filen var låst, fick användaren inte veta det. Programmet skrev "Listan är sparad." ändå.

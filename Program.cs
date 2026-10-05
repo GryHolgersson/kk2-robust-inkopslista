@@ -33,8 +33,13 @@ while (true)
         Console.Write("Namn: ");
         string name = Console.ReadLine();
         Console.Write("Pris: ");
-        // Kraschar om priset inte är ett tal (fel 1)
-        int price = int.Parse(Console.ReadLine());
+        //Kontrollerar att priset är ett tal och om inte visas ett meddelande.
+        //continue gör samma som tidigare, loopen går tillbaka till början så användaren ser menyn utan att någon vara läggs till
+        if (!int.TryParse(Console.ReadLine(), out int price))
+        {
+            Console.WriteLine("Priset måste vara ett heltal");
+            continue;
+        }
         // Skapar ett nytt Item och lägger in det sist i listan.
         // Item kastar undantag om namnet är tomt eller priset negativt (hanteras i del 2)
         list.Add(new Item(name, price));
@@ -43,11 +48,19 @@ while (true)
     else if (choice == 2)
     {
         Console.Write("Nummer: ");
-        // Kraschar om numret inte är ett tal (fel 1)
-        int number = int.Parse(Console.ReadLine());
+        // Kontrollerar att numret är ett tal, samma som för priset.
+        // Om inte visas ett meddelande och continue går tillbaka till menyn.
+        if (!int.TryParse(Console.ReadLine(), out int number))
+        {
+            Console.WriteLine("Numret måste vara ett heltal.");
+            continue;
+        }
         // Tar bort varan med det numret som användaren ser i listan (1, 2, 3...).
-        // RemoveAt svarar true eller false, men svaret används inte än (fel 2)
-        list.RemoveAt(number);
+        // RemoveAt svarar false om numret inte finns i listan, då får användaren veta det.
+        if (!list.RemoveAt(number))
+        {
+            Console.WriteLine("Det finns ingen vara med det numret.");
+        }
     }
     // Spara listan till filen
     else if (choice == 3)

@@ -9,7 +9,11 @@ Startkoden innehöll sex fel: fyra som får programmet att krascha, ett som ger 
 
 **Varför:** `Program.cs` använder `int.Parse` på det användaren skriver (rad 16, 23 och 29). `int.Parse` kastar ett undantag om texten inte är ett tal.
 
-**Hur löst:** *Ej klart.*
+**Hur löst:** Menyvalet använder nu `int.TryParse` i stället för `int.Parse`. `TryParse` kraschar inte, utan returnerar `false` om texten inte är ett tal. En `if` kontrollerar svaret. Om det inte var ett tal visas meddelandet "Du måste skriva en siffra.", och `continue` hoppar tillbaka till början av loopen, så att menyn visas igen. Jag valde `TryParse` med `if` i stället för `try`/`catch` med `FormatException`, eftersom felinmatning är något som förväntas hända ofta.
+
+Priset använder också `int.TryParse` på samma sätt. Om priset inte är ett heltal visas "Priset måste vara ett heltal", och ingen vara läggs till.
+
+Numret för att ta bort en vara använder också `int.TryParse`. Om numret inte är ett heltal visas "Numret måste vara ett heltal.", och ingen vara tas bort.
 
 ### Fel 2: Programmet kraschar när man tar bort en vara som inte finns
 **Vad hände:** Om man valde "Ta bort vara" och skrev ett nummer som inte fanns i listan, till exempel 4 när listan bara har 3 varor, eller 0, kraschade programmet med `ArgumentOutOfRangeException`.
@@ -18,7 +22,7 @@ Startkoden innehöll sex fel: fyra som får programmet att krascha, ett som ger 
 
 **Hur löst:** `RemoveAt` kontrollerar nu att numret ligger mellan 1 och antalet varor innan något tas bort. Metoden returnerar `bool` i stället för `void`: `true` om varan togs bort och `false` om numret inte fanns. Då kan `Program.cs` få veta om det gick bra och ge användaren ett meddelande.
 
-*Ej klart:* `Program.cs` använder ännu inte svaret från `RemoveAt`.
+I `Program.cs` används svaret i en `if`. Om `RemoveAt` returnerar `false` visas "Det finns ingen vara med det numret.".
 
 ### Fel 3: Programmet kraschar om items.txt saknas
 **Vad hände:** Om filen `items.txt` inte fanns kraschade programmet direkt vid start med `FileNotFoundException`. Anropsstacken pekade på `ShoppingList.cs` rad 121, som anropades från `list.Load()` på rad 2 i `Program.cs`.

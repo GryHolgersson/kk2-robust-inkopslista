@@ -35,7 +35,7 @@ class ShoppingList
         }
         
         items.RemoveAt(number - 1);
-    
+        return true; 
     }
 
     // Adderar summorna av alla varor från listan

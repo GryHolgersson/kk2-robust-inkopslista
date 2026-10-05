@@ -118,6 +118,12 @@ class ShoppingList
     // läser in varorna från filen och lägger dem i listan när programmet startar
     public void Load()
     {
+        // Om filen inte finns (t.ex. första gången programmet körs) avslutas Load
+        // och listan börjar tom i stället för att krascha.
+        if (!File.Exists(path))
+        {
+            return;
+        }
         // läser filen och delar upp den i rader direkt, klarar både \r\n och \n
         string[] lines = File.ReadAllLines(path);
        // går igenom raderna en i taget

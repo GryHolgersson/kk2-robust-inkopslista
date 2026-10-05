@@ -25,7 +25,7 @@ Startkoden innehöll sex fel: fyra som får programmet att krascha, ett som ger 
 
 **Varför:** `Load` anropar `File.ReadAllText(path)` utan att först kontrollera att filen finns.
 
-**Hur löst:** *Ej klart.*
+**Hur löst:** Först i `Load` finns nu en kontroll med `File.Exists(path)`. Om filen inte finns avslutas `Load` med `return`, och programmet startar med en tom lista i stället för att krascha. Jag valde `if` i stället för `try`/`catch`, eftersom det går att kontrollera i förväg om filen finns.
 
 ### Fel 4: Programmet kraschar vid start och sökningen hittar inte varor
 **Vad hände:** När `items.txt` fanns kraschade programmet vid start med `IndexOutOfRangeException`. Dessutom hittade sökningen inte varor som syntes i listan.

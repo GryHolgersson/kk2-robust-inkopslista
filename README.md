@@ -34,9 +34,13 @@ Startkoden innehöll sex fel: fyra som får programmet att krascha, ett som ger 
 - Den sista "raden" blir tom. `Split(';')` ger då bara en del, och `parts[1]` finns inte.
 - Ett osynligt `\r` blir kvar i slutet av varje namn, så `"Mjölk"` blir `"Mjölk\r"` och `Find("Mjölk")` hittar ingenting.
 
-**Hur löst:** *Påbörjat.* `File.ReadAllText` och `Split('\n')` är ersatta med `File.ReadAllLines`. Den delar upp filen i rader och klarar både `\r\n` och `\n`, så inget `\r` blir kvar i namnen och ingen tom rad skapas i slutet av filen.
+**Hur löst:** `File.ReadAllText` och `Split('\n')` är ersatta med `File.ReadAllLines`. Den delar upp filen i rader och klarar både `\r\n` och `\n`, så inget `\r` blir kvar i namnen och ingen tom rad skapas i slutet av filen.
 
-*Ej klart:* Loopen kontrollerar ännu inte varje rad. En tom rad mitt i filen, en rad utan `;` eller ett pris som inte är ett tal får fortfarande programmet att krascha.
+Dessutom kontrolleras varje rad innan den används, så att en trasig rad i filen inte kraschar programmet:
+- En `if` kontrollerar att raden har exakt två delar (`parts.Length`) och att priset är ett tal (`int.TryParse` i stället för `int.Parse`). Om inte skrivs ett meddelande ut, och `continue` hoppar till nästa rad.
+- `new Item(...)` ligger i en `try`. Om `Item` vägrar värdena (tomt namn eller negativt pris) fångar `catch (ArgumentException)` felet, och användaren får veta att varan hoppades över. `ArgumentOutOfRangeException` fångas också, eftersom den ärver från `ArgumentException`.
+
+Trasiga rader hoppas alltså över, men resten av filen läses in.
 
 ### Fel 5: Totalsumman blir fel
 **Vad hände:** Totalsumman stämde inte när man räknade efter för hand. Den första varans pris saknades.

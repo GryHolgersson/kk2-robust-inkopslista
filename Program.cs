@@ -1,8 +1,12 @@
+// Skapar en ny inköpslista som sparar och läser varorna från filen items.txt
 ShoppingList list = new ShoppingList("items.txt");
+// Läser in varorna från filen när programmet startar
 list.Load();
 
+// while (true) är en loop som körs om och om igen tills break körs (menyval 5)
 while (true)
 {
+    // Skriver ut en tom rad, listan med alla varor och totalsumman, och sedan menyn
     Console.WriteLine();
     list.Print();
     Console.WriteLine();
@@ -11,32 +15,51 @@ while (true)
     Console.WriteLine("3. Spara");
     Console.WriteLine("4. Sök vara");
     Console.WriteLine("5. Avsluta");
+    // Write (inte WriteLine) gör att användaren skriver på samma rad som "Välj: "
     Console.Write("Välj: ");
 
-    int choice = int.Parse(Console.ReadLine());
+//TryParse försöker göra om texten till ett tal och krashar inte om användaren
+//skriver något annat. Istället returneras false
+//Där visas då ett meddelande och continue tar tillbaka början av loopen så menyn visas på nytt.
+    if (!int.TryParse(Console.ReadLine(), out int choice))
+    {
+        Console.WriteLine("Du måste skriva en siffra. ");
+        continue;
+    }
 
+    // Lägg till vara
     if (choice == 1)
     {
         Console.Write("Namn: ");
         string name = Console.ReadLine();
         Console.Write("Pris: ");
+        // Kraschar om priset inte är ett tal (fel 1)
         int price = int.Parse(Console.ReadLine());
+        // Skapar ett nytt Item och lägger in det sist i listan.
+        // Item kastar undantag om namnet är tomt eller priset negativt (hanteras i del 2)
         list.Add(new Item(name, price));
     }
+    // Ta bort vara
     else if (choice == 2)
     {
         Console.Write("Nummer: ");
+        // Kraschar om numret inte är ett tal (fel 1)
         int number = int.Parse(Console.ReadLine());
+        // Tar bort varan med det numret som användaren ser i listan (1, 2, 3...).
+        // RemoveAt svarar true eller false, men svaret används inte än (fel 2)
         list.RemoveAt(number);
     }
+    // Spara listan till filen
     else if (choice == 3)
     {
         list.Save();
     }
+    // Sök efter en vara
     else if (choice == 4)
     {
         Console.Write("Namn att söka efter: ");
         string wanted = Console.ReadLine();
+        // Find ger tillbaka varan om den finns, annars null (ingenting)
         Item found = list.Find(wanted);
 
         if (found == null)
@@ -45,11 +68,14 @@ while (true)
         }
         else
         {
+            // {found} skrivs ut med ToString i Item.cs, t.ex. "Mjölk - 15 kr"
             Console.WriteLine($"Hittade: {found}");
         }
     }
+    // Avsluta
     else if (choice == 5)
     {
+        // break avbryter while-loopen och programmet tar slut
         break;
     }
 }

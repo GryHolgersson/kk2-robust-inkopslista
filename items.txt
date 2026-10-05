@@ -1,5 +1,1 @@
 13;mjölk
-abc;Kaffe
-Te
-
--5;Socker

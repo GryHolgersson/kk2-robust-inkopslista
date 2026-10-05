@@ -42,6 +42,7 @@ while (true)
         }
         // Skapar ett nytt Item och lägger in det sist i listan.
         // Item kastar undantag om namnet är tomt eller priset negativt (hanteras i del 2)
+        //Krash vid negativt värde
         list.Add(new Item(name, price));
     }
     // Ta bort vara

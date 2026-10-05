@@ -46,7 +46,7 @@ class ShoppingList
     {
         int sum = 0;
 
-        for (int i = 1; i < items.Count; i++)
+        for (int i = 1; i < items.Count; i++) //Loopen börjar på 1 så första varan kommer inte med. 
         {
             sum += items[i].Price;
         }
@@ -103,15 +103,16 @@ class ShoppingList
             File.WriteAllText(path, string.Join("\r\n", lines) + "\r\n");
             Console.WriteLine("Listan är sparad.");
         }
-        catch
+        // Fångar fel om filen är låst av ett annat program eller disken är full.
+        catch (IOException ex)
         {
-        // catch blocket är tomt. Användaren får inte veta om 
-        // filen är låst eller misslyckad. Meddelandet om sparad lista kommer ändå.
-        // skriver in felhantering så att användaren får information om listan ej sparas.
-
+            Console.WriteLine($"Listan kunde inte sparas: {ex.Message}");
         }
-// skrivs alltid ut även om det misslyckades
-        Console.WriteLine("Listan är sparad.");
+        // Fångar fel om programmet saknar rättighet att skriva till filen.
+        catch (UnauthorizedAccessException ex)
+        {
+            Console.WriteLine($"Listan kunde inte sparas, saknar behörighet: {ex.Message}");
+        }
     }
 
     // läser in varorna från filen och lägger dem i listan när programmet startar
@@ -124,7 +125,7 @@ class ShoppingList
        // går igenom raderna en i taget
         foreach (string line in lines)
         {
-            //Koden antar att parts [0] är priset ocu parts[1] är namnet
+            //Koden antar att parts [0] är priset och parts[1] är namnet
             string[] parts = line.Split(';');
             // gör om [0] till ett heltal sedan skapar ett item och namnet samt priset 
             // och lägger in det i listan.

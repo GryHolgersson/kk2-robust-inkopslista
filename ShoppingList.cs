@@ -24,11 +24,12 @@ class ShoppingList
 
     // Användaren ser varorna i ordning 1, 2, 3....
     // Om du tar bort varor så behålls ändå en ordning men den rättar sig efter förändringen.
-    //krashar då RemoveAt kräver index från 0, ex 0,1,2. 
-        //vill användaren se tredje varan kan de skriva 3 och de krashar
-        //användaren måste istället skriva 2. Vilket blir förvirrande
-    public bool RemoveAt(int number)//Bool istället för void då void inte returnerar något. Boo ger ´ja eller nej´ 
+    // Listan räknar från 0 men användaren från 1, därför tas number - 1 bort.
+    // Bool istället för void då void inte returnerar något. Bool ger ´ja eller nej´,
+    // true om varan togs bort och false om numret inte finns.
+    public bool RemoveAt(int number)
     {
+        // Numret måste finnas i listan, annars kraschar items.RemoveAt
         if (number < 1 || number > items.Count)
         {
             return false;
@@ -126,7 +127,7 @@ class ShoppingList
         }
         // läser filen och delar upp den i rader direkt, klarar både \r\n och \n
         string[] lines = File.ReadAllLines(path);
-       // går igenom raderna en i taget
+        // går igenom raderna en i taget
         foreach (string line in lines)
         {
             //Koden antar att parts [0] är priset och parts[1] är namnet

@@ -29,8 +29,13 @@ class ShoppingList
         //användaren måste istället skriva 2. Vilket blir förvirrande
     public bool RemoveAt(int number)//Bool istället för void då void inte returnerar något. Boo ger ´ja eller nej´ 
     {
+        if (number < 1 || number > items.Count)
+        {
+            return false;
+        }
         
         items.RemoveAt(number - 1);
+    
     }
 
     // Adderar summorna av alla varor från listan

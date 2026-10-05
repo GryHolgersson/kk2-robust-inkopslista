@@ -1,3 +1,5 @@
-15;Mjölk
-32;Bröd
-89;Ost
+13;mjölk
+abc;Kaffe
+Te
+
+-5;Socker

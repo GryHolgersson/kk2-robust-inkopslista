@@ -24,8 +24,12 @@ class ShoppingList
 
     // Användaren ser varorna i ordning 1, 2, 3....
     // Om du tar bort varor så behålls ändå en ordning men den rättar sig efter förändringen.
-    public void RemoveAt(int number)
+    //krashar då RemoveAt kräver index från 0, ex 0,1,2. 
+        //vill användaren se tredje varan kan de skriva 3 och de krashar
+        //användaren måste istället skriva 2. Vilket blir förvirrande
+    public bool RemoveAt(int number)//Bool istället för void då void inte returnerar något. Boo ger ´ja eller nej´ 
     {
+        
         items.RemoveAt(number - 1);
     }
 
@@ -92,13 +96,14 @@ class ShoppingList
             // Join sätter ihop raderna med radbrytning och ytterligare en radbrytning
             // läggs sist. Filen skrivs över varje gång
             File.WriteAllText(path, string.Join("\r\n", lines) + "\r\n");
+            Console.WriteLine("Listan är sparad.");
         }
         catch
         {
         // catch blocket är tomt. Användaren får inte veta om 
         // filen är låst eller misslyckad. Meddelandet om sparad lista kommer ändå.
         // skriver in felhantering så att användaren får information om listan ej sparas.
-        
+
         }
 // skrivs alltid ut även om det misslyckades
         Console.WriteLine("Listan är sparad.");

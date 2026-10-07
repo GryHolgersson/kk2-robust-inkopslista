@@ -1,5 +1,5 @@
 // Skapar en ny inköpslista som sparar och läser varorna från filen items.txt
-ShoppingList list = new ShoppingList("items.txt");
+ShoppingList list = new ShoppingList("items.txt", 200);
 // Läser in varorna från filen när programmet startar
 list.Load();
 

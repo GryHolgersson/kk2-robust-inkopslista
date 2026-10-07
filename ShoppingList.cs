@@ -7,12 +7,14 @@
 //Item är den listan som innehåller alla Item objekten 
 class ShoppingList
 {
+    private int limit;// pristak
     private List<Item> items = new List<Item>();
     private string path;
 
-    public ShoppingList(string path)
+    public ShoppingList(string path, int limit)
     {
         this.path = path;
+        this.limit = limit;
     }
 // void innebär att metoden inte returnerar något 
 // Item och item fungerar som en brevlåda och tar emot ett Item

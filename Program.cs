@@ -45,7 +45,10 @@ while (true)
         // catch fångar felet så att programmet inte kraschar och användaren får veta vad som var fel.
         try
         {
-            list.Add(new Item(name, price));
+            if(!list.Add(new Item(name, price)))
+            {
+                Console.WriteLine("Du har nått taket av din budget");
+            }
         }
         catch (ArgumentException ex)
         {

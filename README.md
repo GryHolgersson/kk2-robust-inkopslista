@@ -84,9 +84,14 @@ I `Program.cs` ligger `list.Add(new Item(name, price))` i en `try`. `catch (Argu
 
 Taket kontrolleras bara när användaren lägger till varor. `Load` använder listans egen `items.Add` direkt, så varorna i filen läses alltid in.
 
-**Program.cs:** Ej klart. Svaret från `Add` används inte än.
+**Program.cs:** Anropet `list.Add(new Item(name, price))` ligger i en `if` med `!`, inne i `try`. Om `Add` returnerar `false` får användaren ett meddelande om att budgeten inte räcker, och programmet fortsätter köra. Anropet ligger kvar i `try`, eftersom `new Item(...)` fortfarande kan kasta ett undantag vid tomt namn eller negativt pris. Det fångas av samma `catch (ArgumentException)` som tidigare.
 
 ## Designval
+Jag valde att låta `Add` returnera `false` när en vara skulle spränga taket, i stället för att kasta ett undantag.
+
+**Varför:** Att listan blir för dyr är inget fel i programmet. Det är något som är väntat och kan hända helt vanligt när man handlar, precis som i bankexemplet där ett uttag returnerar `false` när saldot inte räcker. Undantag passar bättre för sådant som inte borde hända, till exempel att någon försöker skapa en vara med tomt namn eller negativt pris. Därför kastar `Item` undantag, men `Add` returnerar `false`.
+
+**Vad det betyder för Program.cs:** Svaret kontrolleras med en vanlig `if (!list.Add(...))`, på samma sätt som svaret från `RemoveAt`. Det behövs ingen extra `catch`, och det blir tydligt i koden att "varan fick inte plats" och "varan var ogiltig" hanteras på olika sätt: det första med `if` och det andra med `catch`.
 
 ## Klassdiagram
 
@@ -112,14 +117,16 @@ Fältet `private int limit;` finns, konstruktorn tar emot `limit` och sparar det
 
 **Varför:** I dag läggs varan alltid till. En vara som skulle spränga taket får inte läggas till.
 
-### 3. Program.cs: hantera svaret från Add
+### 3. Program.cs: hantera svaret från Add ✅ Klart
+`if (!list.Add(...))` inne i `try` visar ett meddelande när budgeten inte räcker. Testkört: varan stoppas, ingen krasch.
+
 **Var:** `Program.cs` rad 48 (`list.Add(new Item(name, price));`) och rad 50 (`catch (ArgumentException ex)`).
 
 **Vad:** Med `bool`: en `if` som kollar svaret och visar ett meddelande om varan inte fick plats. Med ett undantag: en ny `catch` efter rad 50. Användaren måste kunna se skillnad på "ogiltig vara" och "taket nås".
 
 **Varför:** Kravet är att programmet inte kraschar, att användaren får veta vad som hände och att programmet fortsätter köra.
 
-### 4. README: Designval
+### 4. README: Designval ✅ Utkast skrivet, läs igenom och se att det stämmer med hur du tänker
 **Var:** Rubriken "Designval" ovan.
 
 **Vad:** Beskriva hur `Add` säger nej (false eller undantag) och varför, och vad det betyder för `Program.cs`.

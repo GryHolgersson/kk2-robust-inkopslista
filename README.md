@@ -75,6 +75,17 @@ Konstruktorn i `Item` vägrar nu ogiltiga värden i stället för att skapa ett 
 
 I `Program.cs` ligger `list.Add(new Item(name, price))` i en `try`. `catch (ArgumentException)` fångar felet, både tomt namn och negativt pris, eftersom `ArgumentOutOfRangeException` ärver från `ArgumentException`. Användaren får meddelandet "Varan kunde inte läggas till" följt av felet från `Item`, och programmet fortsätter köra.
 
+### Budgettak
+`ShoppingList` har ett tak för hur mycket hela listan får kosta:
+- Fältet `private int limit;` sparar taket. Det sätts i konstruktorn, `ShoppingList(string path, int limit)`.
+- `Program.cs` skapar listan med taket 200 kr: `new ShoppingList("items.txt", 200)`.
+
+`Add` returnerar nu `bool` i stället för `void`. Innan varan läggs till kontrolleras `Total() + item.Price > limit`, alltså om listans nuvarande summa plus den nya varans pris blir större än taket. I så fall returnerar `Add` `false`, och varan läggs inte till. Annars läggs varan till och `Add` returnerar `true`. Summan får bli exakt lika med taket, eftersom `>` används och inte `>=`.
+
+Taket kontrolleras bara när användaren lägger till varor. `Load` använder listans egen `items.Add` direkt, så varorna i filen läses alltid in.
+
+**Program.cs:** Ej klart. Svaret från `Add` används inte än.
+
 ## Designval
 
 ## Klassdiagram
@@ -92,7 +103,9 @@ Fältet `private int limit;` finns, konstruktorn tar emot `limit` och sparar det
 
 **Varför:** Kravet i Del 2 är att `ShoppingList` har ett tak för hur dyr listan får bli totalt. Listan måste komma ihåg taket för att kunna kontrollera det.
 
-### 2. Budgettak: Add ska säga nej
+### 2. Budgettak: Add ska säga nej ✅ Klart
+`Add` returnerar `bool` och säger nej med `return false` när `Total() + item.Price > limit`.
+
 **Var:** `ShoppingList.cs` rad 22–25, metoden `Add`.
 
 **Vad:** Före `items.Add(item);` behövs en kontroll som visar om `Total()` plus den nya varans pris blir större än taket. Bestäm om `Add` säger nej genom att returnera `false` (då ändras `void` till `bool`) eller genom att kasta ett undantag.

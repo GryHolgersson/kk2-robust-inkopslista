@@ -19,9 +19,15 @@ class ShoppingList
 // void innebär att metoden inte returnerar något 
 // Item och item fungerar som en brevlåda och tar emot ett Item
 // Listans add lägger item sist i listan
-    public void Add(Item item)
+    public bool Add(Item item)
     {
+        if (Total() + item.Price > limit)
+        {
+           return false; 
+        
+        }
         items.Add(item);
+        return true;
     }
 
     // Användaren ser varorna i ordning 1, 2, 3....

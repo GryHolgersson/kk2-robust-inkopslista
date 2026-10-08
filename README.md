@@ -95,52 +95,40 @@ Jag valde att låta `Add` returnera `false` när en vara skulle spränga taket, 
 
 ## Klassdiagram
 
----
+```mermaid
+classDiagram
+    class Program {
+        -ShoppingList list
+        -int choice
+    }
+    class ShoppingList {
+        -int limit
+        -List~Item~ items
+        -string path
+        +ShoppingList(string path, int limit)
+        +Add(Item item) bool
+        +RemoveAt(int number) bool
+        +Total() int
+        +Find(string name) Item
+        +Print() void
+        +Save() void
+        +Load() void
+    }
+    class Item {
+        +string Name
+        +int Price
+        +Item(string name, int price)
+        +ToString() string
+    }
+    Program --> ShoppingList : använder
+    Program ..> Item : skapar
+    ShoppingList "1" o-- "0..*" Item : innehåller
+```
 
-## Kvar att göra (tas bort före inlämning)
-
-### 1. Budgettak: fält och konstruktor ✅ Klart
-Fältet `private int limit;` finns, konstruktorn tar emot `limit` och sparar det med `this.limit = limit;`, och `Program.cs` skapar listan med taket 200 kr.
-
-**Var:** `ShoppingList.cs` rad 11 (fälten) och rad 13–16 (konstruktorn), samt `Program.cs` rad 2.
-
-**Vad:** Lägga till ett privat fält för taket. Konstruktorn behöver en parameter till som sparar taket i fältet, på samma sätt som `this.path = path;`. I `Program.cs` rad 2 måste ett tak skickas med när listan skapas.
-
-**Varför:** Kravet i Del 2 är att `ShoppingList` har ett tak för hur dyr listan får bli totalt. Listan måste komma ihåg taket för att kunna kontrollera det.
-
-### 2. Budgettak: Add ska säga nej ✅ Klart
-`Add` returnerar `bool` och säger nej med `return false` när `Total() + item.Price > limit`.
-
-**Var:** `ShoppingList.cs` rad 22–25, metoden `Add`.
-
-**Vad:** Före `items.Add(item);` behövs en kontroll som visar om `Total()` plus den nya varans pris blir större än taket. Bestäm om `Add` säger nej genom att returnera `false` (då ändras `void` till `bool`) eller genom att kasta ett undantag.
-
-**Varför:** I dag läggs varan alltid till. En vara som skulle spränga taket får inte läggas till.
-
-### 3. Program.cs: hantera svaret från Add ✅ Klart
-`if (!list.Add(...))` inne i `try` visar ett meddelande när budgeten inte räcker. Testkört: varan stoppas, ingen krasch.
-
-**Var:** `Program.cs` rad 48 (`list.Add(new Item(name, price));`) och rad 50 (`catch (ArgumentException ex)`).
-
-**Vad:** Med `bool`: en `if` som kollar svaret och visar ett meddelande om varan inte fick plats. Med ett undantag: en ny `catch` efter rad 50. Användaren måste kunna se skillnad på "ogiltig vara" och "taket nås".
-
-**Varför:** Kravet är att programmet inte kraschar, att användaren får veta vad som hände och att programmet fortsätter köra.
-
-### 4. README: Designval ✅ Utkast skrivet, läs igenom och se att det stämmer med hur du tänker
-**Var:** Rubriken "Designval" ovan.
-
-**Vad:** Beskriva hur `Add` säger nej (false eller undantag) och varför, och vad det betyder för `Program.cs`.
-
-**Varför:** Det är ett krav i Del 2 och en av de tre delarna som README:n måste innehålla.
-
-### 5. README: Klassdiagram
-**Var:** Rubriken "Klassdiagram" ovan.
-
-**Vad:** Tre rutor, `Program`, `ShoppingList` och `Item`, med fält och metoder, och en linje som visar att `ShoppingList` innehåller många `Item`. Görs när budgettaket är klart, så att diagrammet visar slutversionen.
-
-**Varför:** Det är ett krav för README:n.
-
-### Frivilligt / bra att kunna förklara
-- `Item.cs` rad 9–10: `Name` och `Price` har `public set`, så de kan ändras till ogiltiga värden efter att objektet skapats, och då går man runt kontrollen i konstruktorn. Med `private set` stängs den vägen.
-- `ShoppingList.cs`, `Find`: sökningen skiljer på stora och små bokstäver ("Mjölk" hittar inte "mjölk").
-- Extra: en egen undantagstyp (om undantag väljs för taket), att spara taket i filen, och `finally`/`using`.
+**Så läses diagrammet:**
+- Varje ruta är en klass. Överst står fälten, under dem konstruktorn och metoderna.
+- `-` betyder `private` och `+` betyder `public`. Ordet efter en metod är det den returnerar.
+- `Program` är ingen egen klass i koden. `Program.cs` använder top-level statements, men visas som en ruta eftersom det är där menyn finns. `choice` är menyvalet 1–5.
+- `Program` skapar en `ShoppingList` och anropar dess metoder från menyn.
+- `Program` skapar också nya `Item` när användaren lägger till en vara.
+- En `ShoppingList` innehåller noll eller flera `Item` i listan `items`.
